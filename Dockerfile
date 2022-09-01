@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED=1 \
     \
     # poetry
     # https://python-poetry.org/docs/configuration/#using-environment-variables
-    POETRY_VERSION=1.2 \
+    POETRY_VERSION=1.2.0 \
     # make poetry install to this location
     POETRY_HOME="/opt/poetry" \
     # make poetry create the virtual environment in the project's root
@@ -41,11 +41,22 @@ RUN apt-get update \
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
-# install dependencies
-COPY pyproject.toml poetry.lock ./code
+WORKDIR $PYSETUP_PATH
+COPY poetry.lock pyproject.toml ./
 
-RUN poetry install --no-interaction --no-ansi --no-dev
+RUN poetry install --no-interaction --no-ansi --no-root
 
-COPY ./app /code/app
+# `production` image used for runtime
+FROM python-base as production
+ENV FASTAPI_ENV=production
+COPY --from=builder-base $POETRY_HOME $POETRY_HOME
+COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
+# Copying in our entrypoint
+COPY ./docker/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+WORKDIR /app
+COPY . .
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+EXPOSE 8000
+ENTRYPOINT /docker-entrypoint.sh $0 $@
+CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "app.main:app"]
