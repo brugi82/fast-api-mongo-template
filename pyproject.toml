@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "fast-api-mongo-template"
+version = "0.1.0"
+description = "Fast API mongo db starter template"
+authors = ["Milos Petrovic <milos.brugi@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fast_api_mongo_template"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
