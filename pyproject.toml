@@ -8,7 +8,12 @@ packages = [{include = "fast_api_mongo_template"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+fastapi = "^0.81.0"
+uvicorn = {extras = ["standard"], version = "^0.18.3"}
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.8.0"
 
 [build-system]
 requires = ["poetry-core"]
