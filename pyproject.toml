@@ -10,6 +10,9 @@ packages = [{include = "fast_api_mongo_template"}]
 python = "^3.10"
 fastapi = "^0.81.0"
 uvicorn = {extras = ["standard"], version = "^0.18.3"}
+python-multipart = "^0.0.5"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 
 
 [tool.poetry.group.dev.dependencies]
