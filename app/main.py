@@ -9,3 +9,8 @@ app.include_router(auth_router)
 @app.get("/")
 async def root():
     return "Hello world!"
+
+
+@app.get("/test")
+async def test():
+    return "Testing 123"
