@@ -57,6 +57,6 @@ RUN chmod +x /docker-entrypoint.sh
 WORKDIR /app
 COPY . .
 
-EXPOSE 8000
+EXPOSE 8080
 ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8000", "app.main:app"]
+CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8080", "app.main:app"]
