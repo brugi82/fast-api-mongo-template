@@ -1,26 +1,17 @@
 from .models import UserInDb
 from .crypto import verify_password
-
-fake_user_db = {
-    "test@fly.io": {
-        "username": "test@fly.io",
-        "first_name": "John",
-        "last_name": "Doe",
-        "hashed_password": "$2b$12$6VPYp77bBEF82S8wYzk/su20cU8HqZacE/K7gcJWEsKwubVNuOevu",
-        "confirmed": True,
-    }
-}
+from ..db.client import db
 
 
-def get_user(username):
-    if username in fake_user_db:
-        user = fake_user_db[username]
-        return UserInDb(**user)
+async def get_user(username):
+    user = await db["user"].find_one({"username": {"$eq": username}})
+    if user:
+        return UserInDb.from_mongo(user)
     return None
 
 
-def authenticate_user(username, password):
-    user = get_user(username)
+async def authenticate_user(username, password):
+    user = await get_user(username)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):

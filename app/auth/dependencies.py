@@ -10,7 +10,7 @@ from .services import get_user
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -23,13 +23,13 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    user = get_user(username)
+    user = await get_user(username)
     if not user:
         raise credentials_exception
     return user
 
 
-def get_current_confirmed_user(user: UserInDb = Depends(get_current_user)):
+async def get_current_confirmed_user(user: UserInDb = Depends(get_current_user)):
     if user.confirmed == False:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
