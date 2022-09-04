@@ -21,4 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - run:
+          flyctl deploy --remote-only --env FAMT_ALGORITHM=${{ secrets.FAMT_ALGORITHM }}
+          --env FAMT_MONGO_URL=${{ secrets.FAMT_MONGO_URL }}
+          --env FAMT_SECRET_KEY=${{ secrets.FAMT_SECRET_KEY }}

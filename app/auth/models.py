@@ -1,10 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from ..db.model import MongoModel
 
 
-class User(BaseModel):
-    username: str
-    first_name: str
-    last_name: str
+class User(MongoModel):
+    username: str = Field(...)
+    first_name: str = Field(...)
+    last_name: str = Field(...)
     confirmed: bool | None = None
 
 
