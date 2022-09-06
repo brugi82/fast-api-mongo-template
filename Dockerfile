@@ -59,4 +59,4 @@ COPY . .
 
 EXPOSE 8080
 ENTRYPOINT /docker-entrypoint.sh $0 $@
-CMD ["uvicorn", "--reload", "--host=0.0.0.0", "--port=8080", "app.main:app"]
+CMD ["uvicorn", "--host=0.0.0.0", "--port=8080", "app.main:app"]
