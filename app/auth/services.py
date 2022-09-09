@@ -1,4 +1,4 @@
-from .models import UserInDb
+from app.auth.models import UserInDb
 from .crypto import verify_password
 from ..db.client import db
 
@@ -6,7 +6,7 @@ from ..db.client import db
 async def get_user(username):
     user = await db["user"].find_one({"username": {"$eq": username}})
     if user:
-        return UserInDb.from_mongo(user)
+        return UserInDb(**user)
     return None
 
 

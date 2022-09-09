@@ -23,12 +23,11 @@ class MongoModel(BaseModel):
         allow_population_by_field_name = True
         json_encoders = {ObjectId: lambda x: str(x), datetime: lambda x: x.isoformat()}
 
-    @classmethod
-    def from_mongo(cls, data: dict):
+    def __init__(__pydantic_self__, **data):
         if not data:
             return data
         id = data.pop("_id", None)
-        return cls(**dict(data, id=id))
+        super().__init__(**dict(data, id=id))
 
     @classmethod
     def to_mongo(self, **kwargs):
