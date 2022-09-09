@@ -44,10 +44,19 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
+FROM builder-base as test
 RUN poetry install --no-interaction --no-ansi --no-root
+COPY --from=builder-base $POETRY_HOME $POETRY_HOME
+COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
+WORKDIR /app
+COPY . .
+
+RUN coverage run -m pytest
+RUN coverage report
 
 # `production` image used for runtime
-FROM python-base as production
+FROM builder-base as production
+RUN poetry install --no-interaction --no-ansi --no-root --without test,dev
 ENV FASTAPI_ENV=production
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH

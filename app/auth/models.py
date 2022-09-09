@@ -16,3 +16,8 @@ class UserInDb(User):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class CryptoConfig(BaseModel):
+    secret_key: str
+    algo: str
