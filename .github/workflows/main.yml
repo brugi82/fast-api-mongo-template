@@ -35,5 +35,5 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: true
+          push: false
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/fast-api-mongo-template:latest
