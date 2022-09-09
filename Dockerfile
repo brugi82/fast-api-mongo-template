@@ -51,8 +51,8 @@ COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 WORKDIR /app
 COPY . .
 
-CMD ["coverage", "run", "-m", "pytest"]
-CMD ["coverage", "report"]
+RUN coverage run -m pytest
+RUN coverage report
 
 # `production` image used for runtime
 FROM builder-base as production
